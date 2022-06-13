@@ -23,11 +23,11 @@ public static class TextureGenerator
 
         Color[] colorMap = new Color[width * height];
 
-        for (int i = 0; i < width; i++)
+        for (int y = 0; y < width; y++)
         {
-            for (int j = 0; j < height; j++)
+            for (int x = 0; x < height; x++)
             {
-                colorMap[i * width + j] = Color.Lerp(Color.black, Color.white, heightMap[i, j]);
+                colorMap[y * width + x] = Color.Lerp(Color.black, Color.white, heightMap[x, y]);
             }
         }
 

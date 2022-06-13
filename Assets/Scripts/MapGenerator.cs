@@ -10,7 +10,7 @@ public class MapGenerator : MonoBehaviour
     public DrawMode drawMode;
     public Noise.NormalizeMode normalizeMode;
     public bool autoUpdate = true;
-    public const int mapChunkSize = 241;
+    public const int mapChunkSize = 239;
     [Range(0, 6)]
     public int editorPreviewLevelOfDetail;
     public float noiseScale;
@@ -121,23 +121,23 @@ public class MapGenerator : MonoBehaviour
 
     MapData GenerateMapData(Vector2 centre)
     {
-        float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode);
+        float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize + 2, mapChunkSize + 2, seed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode);
 
         Color[] colorMap = new Color[mapChunkSize * mapChunkSize];
-        for (int i = 0; i < mapChunkSize; i++)
+        for (int y = 0; y < mapChunkSize; y++)
         {
-            for (int j = 0; j < mapChunkSize; j++)
+            for (int x = 0; x < mapChunkSize; x++)
             {
                 if (useFalloff)
                 {
-                    noiseMap[j, i] = Mathf.Clamp01(noiseMap[j, i] - falloffmap[j, i]);
+                    noiseMap[x,y] = Mathf.Clamp01(noiseMap[x,y] - falloffmap[x,y]);
                 }
-                float currentHeight = noiseMap[j, i];
+                float currentHeight = noiseMap[x,y];
                 for (int k = 0; k < regions.Length; k++)
                 {
                     if (currentHeight >= regions[k].height)
                     {
-                        colorMap[i * mapChunkSize + j] = regions[k].color;
+                        colorMap[y * mapChunkSize + x] = regions[k].color;
                     }
                     else
                     {
